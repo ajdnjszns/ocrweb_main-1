@@ -33,7 +33,6 @@ export default new Vuex.Store({
       state.adminLogin = false;
       console.clear();
       alert("아이디 또는 비밀번호를 확인해 주세요");
-      
     },
     //관리자 로그아웃 시
     logOut(state) {
@@ -69,7 +68,6 @@ export default new Vuex.Store({
       var account = {};
       account.user_id = loginObj.id;
       account.password = loginObj.password;
-      // Code1OcrWeb/login
       axios
         .post("/Code1OcrWeb/login", null, {
           params: {
@@ -78,7 +76,7 @@ export default new Vuex.Store({
           },
         })
         .then((res) => {
-          console.log(res.statusText);
+          console.log(res);
           result = res.status;
           if (result == 200) {
             commit("loginSuccess");
@@ -92,7 +90,6 @@ export default new Vuex.Store({
               })
               .then((res) => {
                 console.log(res.data);
-                vueCookies.set("pgesecuid", ssocookie);
               })
               .catch((error) => {
                 console.log(error.response.status, "error");
@@ -101,7 +98,7 @@ export default new Vuex.Store({
         })
         .catch((error) => {
           commit("loginError");
-          console.log(error.response.data)
+          console.log(error.response.data);
         });
     },
     //관리자 로그아웃 & sso 로그인 시도
@@ -118,11 +115,10 @@ export default new Vuex.Store({
               pgsecuid: ssocookie,
               user_id: "nynjn",
             },
+            withCredentials: true,
           })
           .then((res) => {
             console.log(res);
-            console.log(state.userLogout);
-            vueCookies.set("pgesecuid", ssocookie);
             state.user_name = res.data.user_name;
             state.organization = res.data.organization;
             state.ocr_user_id = res.data.user_id;
@@ -145,16 +141,13 @@ export default new Vuex.Store({
             pgsecuid: ssocookie,
             user_id: "nynjn",
           },
+          withCredentials: true,
         })
         .then((res) => {
           console.log(res);
-          console.log(state.userLogout);
-          console.log(window.location.href)
-          vueCookies.set("pgesecuid", ssocookie);
           state.user_name = res.data.user_name;
           state.organization = res.data.organization;
           state.ocr_user_id = res.data.user_id;
-
           commit("userLogin");
         })
         .catch((error) => {
@@ -165,18 +158,12 @@ export default new Vuex.Store({
     },
     //sso로그아웃
     ssoLogOut({ state, commit }) {
-      const ssocookie = vueCookies.get("pgsecuid");
       axios
-        .get("/Code1OcrWeb/ssologout", {
-          params: {
-            pgsecuid: ssocookie,
-          },
-        })
+        .get("/Code1OcrWeb/ssologout")
         .then((res) => {
           console.log(res.data);
-          vueCookies.set("pgesecuid", ssocookie);
           commit("userLogout");
-          router.push("/");
+          router.push("/401");
         })
         .catch((error) => {
           console.log(error, "error");
