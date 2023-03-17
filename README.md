@@ -1,18 +1,15 @@
 # vuetify
 
-## Project setup
+## ocrweb 서버 가동
 ```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
+206pc D:\\tomcat9\bin\ 경로에서 cmd명령어 >> catalina.bat start
 ```
 
-### Compiles and minifies for production
+### ocrweb 프폰트
 ```
-npm run build
+202pc \\192.168.219.202\Code1System_백업\임대원\ocrweb
+ocrweb_main_20230222.zip 압축해제 후
+폴더 경로에서 cmd창 >> npm run serve
 ```
 
 ### Customize configuration
